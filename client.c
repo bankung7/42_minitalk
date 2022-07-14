@@ -10,6 +10,11 @@ void ack_handler(int sig, siginfo_t *info, void *context)
     (void)context;
     if (sig == SIGUSR1)
         g_ack++;
+    if (sig == SIGUSR2)
+    {
+        ft_printf("Sent failed\n");
+        exit(1);
+    }
 }
 
 void ft_squawk(pid_t pid, char **argv)
@@ -27,7 +32,7 @@ void ft_squawk(pid_t pid, char **argv)
                 kill(pid, SIGUSR1);
             else
                 kill(pid, SIGUSR2);
-            usleep(200);
+            usleep(2500);
         }
         j++;
     }
@@ -45,12 +50,12 @@ int main(int argc, char **argv)
     sigemptyset(&action.sa_mask);
     action.sa_flags = SA_SIGINFO;
     sigaction(SIGUSR1, &action, NULL);
+    sigaction(SIGUSR2, &action, NULL);
     pid = ft_atoi(argv[1]);
     len = ft_strlen(argv[2]);
     ft_squawk(pid, argv);
-    while (1)
-        if (g_ack == len)
-            break;
+    while (g_ack != len)
+        pause();
     ft_printf("server ack %d bytes\n", len);
     return (0);
 }

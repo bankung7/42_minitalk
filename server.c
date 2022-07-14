@@ -10,22 +10,21 @@ void handler(int sig, siginfo_t *info, void *context)
 
     (void)context;
     (void)info;
-    if (c_pid == 0)
-        c_pid = info->si_pid;
-    if (i++ < 8)
+    if (c_pid != info->si_pid)
     {
-        if (sig == SIGUSR1)
-            c = c << 1 | 1;
-        else if (sig == SIGUSR2)
-            c = c << 1 | 0;
+        c_pid = info->si_pid;
+        i = 0;
     }
-    if (i == 8)
+    if (sig == SIGUSR1)
+        c = c << 1 | 1;
+    else
+        c = c << 1;
+    if (++i == 8)
     {
         ft_putchar_fd(c, 1);
         kill(c_pid, SIGUSR1);
         i = 0;
         c = 0;
-        c_pid = 0;
     }
 }
 
