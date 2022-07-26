@@ -1,4 +1,8 @@
-NAME = server
+NAME_SERVER = server
+NAME_CLIENT = client
+
+LIBFT_DIR = libft
+LIBFT = libft/libftprintf.a
 
 CC = gcc
 
@@ -6,30 +10,34 @@ CFLAGS = -Wall -Werror -Wextra
 
 RM = rm -rf
 
-SRC_SV = ./server.c
+SRCS = server.c client.c
 
-SRC_CT = ./client.c
+OBJS = $(SRCS:.c=.o)
 
-OBJS_SV = $(SRC_SV:.c=.o)
+all: $(NAME_SERVER) $(NAME_CLIENT)
 
-OBJS_CT = $(SRC_CT:.c=.o)
+bonus: $(NAME_SERVER) $(NAME_CLIENT)
 
-all: $(NAME)
+$(NAME_SERVER): $(NAME_SERVER).o $(LIBFT)
+	@$(CC) $(CFLAGS) $^ -o $@
+	@echo "server ready"
 
-$(NAME): $(OBJS_SV) $(OBJS_CT)
-	make -C ./libft
-	cp libft/libftprintf.a libft.a
-	$(CC) $(CFLAGS) $(OBJS_SV) libft.a -o server
-	$(CC) $(CFLAGS) $(OBJS_CT) libft.a -o client
+$(NAME_CLIENT): $(NAME_CLIENT).o $(LIBFT)
+	@$(CC) $(CFLAGS) $^ -o $@
+	@echo "client ready"
+
+$(LIBFT):
+	@make -C $(LIBFT_DIR)
+	@echo "libft ready"
 
 clean:
-	make clean -C ./libft
-	$(RM) $(OBJS_SV) $(OBJS_CT)
+	@make clean -C ./libft
+	@$(RM) $(OBJS_SV) $(OBJS_CT)
 
 fclean: clean
-	make fclean -C ./libft
-	$(RM) server client libft.a
+	@make fclean -C ./libft
+	@$(RM) server client libft.a
 
-re: fclean
+re: fclean all
 
-.PHONY: all clean fclean re server client
+.PHONY: all clean fclean re
