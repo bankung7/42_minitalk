@@ -31,12 +31,12 @@ $(LIBFT):
 	@echo "libft ready"
 
 clean:
-	@make clean -C ./libft
-	@$(RM) $(OBJS_SV) $(OBJS_CT)
+	@make clean -C $(LIBFT_DIR)
+	@$(RM) $(OBJS)
 
 fclean: clean
-	@make fclean -C ./libft
-	@$(RM) server client libft.a
+	@make fclean -C $(LIBFT_DIR)
+	@$(RM) $(NAME_SERVER) $(NAME_CLIENT)
 
 re: fclean all
 
