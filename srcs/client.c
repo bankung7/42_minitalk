@@ -6,7 +6,7 @@
 /*   By: vnilprap <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 21:41:01 by vnilprap          #+#    #+#             */
-/*   Updated: 2022/08/04 21:41:02 by vnilprap         ###   ########.fr       */
+/*   Updated: 2022/08/04 22:37:33 by vnilprap         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,11 @@ int	main(int argc, char **argv)
 	action.sa_sigaction = ft_handler;
 	action.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &action, 0);
+	if (ft_strlen(argv[2]) == 0)
+	{
+		ft_putstr_fd("no file to send\n", 1);
+		return (0);
+	}
 	ft_moss(ft_atoi(argv[1]), argv[2]);
 	if (ft_send(0, 0, 0) - 1 == (int)ft_strlen(argv[2]) * 8)
 		ft_putstr_fd("server received\n", 1);
