@@ -1,0 +1,2 @@
+- hanldle when client send to pid where is not exist.
+    + fix in client when [kill] to server check if it return -1

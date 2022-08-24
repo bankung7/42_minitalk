@@ -18,6 +18,7 @@ int	ft_send(pid_t pid, char c, int j)
 {
 	static int	ack;
 	static int	i;
+	int check;
 
 	if (pid == 0 && c == 0 && j == 0)
 	{
@@ -25,9 +26,11 @@ int	ft_send(pid_t pid, char c, int j)
 		return (ack);
 	}
 	if (c >> j & 1)
-		kill(pid, SIGUSR1);
+		check = kill(pid, SIGUSR1);
 	else
-		kill(pid, SIGUSR2);
+		check = kill(pid, SIGUSR2);
+	if (check == -1)
+		return (0);
 	while (1)
 	{
 		while (ack == i)
